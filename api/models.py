@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -9,21 +11,21 @@ class UserCreate(BaseModel):
 
 
 class User(BaseModel):
+    """Схема для отображения пользователя"""
     id: int
     username: str
     full_name: str
-    telegram_bot_token: str | None
+    telegram_id: Optional[int] = None
 
     class Config:
         from_attributes = True # говорит Pydantic, что можно получать данные из ORM моделей
 
 
-# Модель для аутентификации (логин)
 class Token(BaseModel):
+    """Схема для создания токена"""
     access_token: str
     token_type: str
 
 
-class TelegramBotToken(BaseModel):
-    """Схема для подключения Telegram"""
-    telegram_bot_token: str
+class TelegramId(BaseModel):
+    telegram_id: Optional[int] = None

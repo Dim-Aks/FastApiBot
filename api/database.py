@@ -7,7 +7,7 @@ from sqlalchemy import Column, Integer, String, create_engine
 
 load_dotenv()
 
-DATABASE_URL = os.environ.get("DATABASE_URL")  # Измените на свои значения
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 # Создаем движок SQLAlchemy
 engine = create_engine(DATABASE_URL)
@@ -26,7 +26,7 @@ class User(Base):
     username = Column(String, unique=True)
     hashed_password = Column(String)
     full_name = Column(String)
-    telegram_bot_token = Column(String, nullable=True)
+    telegram_id = Column(Integer, nullable=True, unique=True)
 
 
 def create_db_and_tables():

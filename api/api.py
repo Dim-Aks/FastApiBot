@@ -1,9 +1,9 @@
 import os
 from dotenv import load_dotenv
-from fastapi import Depends, Request, HTTPException, status, APIRouter
+from fastapi import Depends, HTTPException, status, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from starlette.responses import RedirectResponse
+
 from . import database, auth, models, security
 
 
@@ -11,7 +11,6 @@ load_dotenv()
 
 router = APIRouter()
 
-# Настройка сессий
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 
@@ -47,10 +46,14 @@ async def read_users_me(current_user: models.User = Depends(auth.get_current_use
     return current_user
 
 
-# @router.post("/bot", response_model=models.TelegramBotToken)
-# async def telegram_bot_token(telegram_bot: models.TelegramBotToken,
-#                                     db: Session = Depends(database.get_db),
-#                                     current_user: database.User = Depends(auth.get_current_active_user)):
-#     current_user.telegram_bot_token = telegram_bot.token
-#     db.commit()
-#     return {"message": "Telegram bot token updated successfully"}
+@router.put("/telegram_id", response_model=models.TelegramId)
+async def set_telegram_id(telegram_bot_data: models.TelegramId,
+                          current_user: models.User = Depends(auth.get_current_user),
+                          db: Session = Depends(database.get_db)):
+    user = current_user
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+    user.telegram_id = telegram_bot_data.telegram_id
+    db.commit()
+    db.refresh(user)
+    return telegram_bot_data
