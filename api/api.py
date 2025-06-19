@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-
 from . import database, auth, models, security
 
 

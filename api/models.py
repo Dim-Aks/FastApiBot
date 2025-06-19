@@ -28,4 +28,5 @@ class Token(BaseModel):
 
 
 class TelegramId(BaseModel):
+    """Схема для создания telegram id"""
     telegram_id: Optional[int] = None

@@ -1,6 +1,6 @@
 import os
 import asyncio
-from FastApiBot.api.database import User, Base
+from api.database import User, Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
@@ -53,4 +53,5 @@ async def start() -> None:
     Base.metadata.create_all(engine)
     await dp.start_polling(bot)
 
-asyncio.run(start())
+if __name__ == "__main__":
+    asyncio.run(start())
